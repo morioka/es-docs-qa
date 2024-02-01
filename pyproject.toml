@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "es-docs-qa"
+version = "0.1.0"
+description = ""
+authors = [""]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "1.10.13"
+langchain = "0.0.331"
+beautifulsoup4 = "4.12.2"
+unstructured = "0.10.28"
+tiktoken = "^0.5.1"
+python-decouple = "^3.8"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

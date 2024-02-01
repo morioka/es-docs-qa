@@ -1,0 +1,11 @@
+pydantic
+langchain
+beautifulsoup4
+unstructured
+tiktoken
+python-decouple
+openai
+elasticsearch
+gradio
+langchain-community
+langchain-openai
