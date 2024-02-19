@@ -18,6 +18,3 @@ $ python src/setting.py
 $ python src/main.py
 ```
 
-## 注
-- "UserWarning: ElasticVectorSearch will be removed in a future release. See Elasticsearch integration docs on how to upgrade."
-- "UserWarning: `VectorDBQAWithSourcesChain` is deprecated - please use `from langchain.chains import RetrievalQAWithSourcesChain`"

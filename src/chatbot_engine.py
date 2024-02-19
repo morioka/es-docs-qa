@@ -18,12 +18,19 @@ def _get_question_prompt(text: str) -> str:
 
 
 from langchain import agents
-from langchain.chains import VectorDBQAWithSourcesChain
+from langchain.chains import RetrievalQAWithSourcesChain
+from langchain.retrievers.self_query.base import SelfQueryRetriever
 from langchain.agents import AgentType, Tool
 
 def chat(message: str) -> str:
+    document_content_description="Elasticsearch documents"
+    metadata_field_info=[]
+
     llm = setting.get_llm()
-    qa = VectorDBQAWithSourcesChain.from_chain_type(llm, chain_type="map_reduce", vectorstore=setting.get_vector_store())
+    retriever = SelfQueryRetriever.from_llm(
+        llm, setting.get_vector_store(), document_content_description, metadata_field_info, verbose=True
+    )    
+    qa = RetrievalQAWithSourcesChain.from_chain_type(llm, chain_type="stuff", retriever=retriever)
 
     tools = [
         Tool(

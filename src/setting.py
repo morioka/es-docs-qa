@@ -19,7 +19,7 @@ def get_es_docs() -> list[Document]:
 
 from decouple import config
 from langchain_openai import OpenAIEmbeddings
-from langchain.vectorstores.elastic_vector_search import ElasticVectorSearch
+from langchain_community.vectorstores.elasticsearch import ElasticsearchStore
 
 # 環境変数読み込み
 OPENAI_API_KEY = config("OPENAI_API_KEY")
@@ -27,23 +27,24 @@ INDEX_NAME = config("INDEX_NAME")
 ELASTICSEARCH_HOST = config("ELASTICSEARCH_HOST")
 
 embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
-vector_store = ElasticVectorSearch(
-    elasticsearch_url=ELASTICSEARCH_HOST,
+vector_store = ElasticsearchStore(
+    es_url=ELASTICSEARCH_HOST,
     index_name=INDEX_NAME,
-    embedding=embeddings
+    embedding=embeddings,
+    strategy=ElasticsearchStore.ExactRetrievalStrategy()
 )
 
-from langchain_community.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 
 def get_llm() -> ChatOpenAI:
     return ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0, openai_api_key=OPENAI_API_KEY)
 
 
-def get_vector_store() -> ElasticVectorSearch:
+def get_vector_store() -> ElasticsearchStore:
     return vector_store
 
 
-def create_index(vector_store: ElasticVectorSearch):
+def create_index(vector_store: ElasticsearchStore):
     docs = get_es_docs()
     print("=== add documents to index ===")
     vector_store.add_documents(
