@@ -10,3 +10,4 @@ python-decouple==3.8
 tiktoken==0.5.2
 unstructured==0.12.3
 lark==1.1.9
+langchainhub==0.1.4

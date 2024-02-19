@@ -20,11 +20,13 @@ def _get_question_prompt(text: str) -> str:
 from langchain import agents
 from langchain.chains import RetrievalQAWithSourcesChain
 from langchain.retrievers.self_query.base import SelfQueryRetriever
-from langchain.agents import AgentType, Tool
+from langchain.agents import AgentExecutor, Tool, create_react_agent
+from langchain import hub
 
 def chat(message: str) -> str:
     document_content_description="Elasticsearch documents"
     metadata_field_info=[]
+    prompt = hub.pull("hwchase17/react")
 
     llm = setting.get_llm()
     retriever = SelfQueryRetriever.from_llm(
@@ -40,9 +42,9 @@ def chat(message: str) -> str:
         )
     ]
 
-    agent = agents.initialize_agent(tools, llm=llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
-
+    agent = create_react_agent(llm, tools, prompt)
+    agent_executor = AgentExecutor(agent=agent, tools=tools)
     question = _get_question_prompt(message)
-    answer = agent.run(question)
+    answer = agent_executor.invoke({"input": question})['output']
     return answer
 
