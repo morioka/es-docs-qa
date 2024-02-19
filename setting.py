@@ -1,7 +1,6 @@
 import glob
 
 from langchain.docstore.document import Document
-#from langchain.document_loaders import BSHTMLLoader
 from langchain_community.document_loaders import BSHTMLLoader
 from langchain.text_splitter import CharacterTextSplitter
 
@@ -19,7 +18,6 @@ def get_es_docs() -> list[Document]:
     return docs
 
 from decouple import config
-#from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain.vectorstores.elastic_vector_search import ElasticVectorSearch
 
@@ -35,7 +33,6 @@ vector_store = ElasticVectorSearch(
     embedding=embeddings
 )
 
-#from langchain.chat_models import ChatOpenAI
 from langchain_community.chat_models import ChatOpenAI
 
 def get_llm() -> ChatOpenAI:
